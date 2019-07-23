@@ -1,0 +1,14 @@
+.register-content {
+    padding: 0 30%;
+}
+
+.register-body {
+    background: url("background.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.signup-btn, .signin-btn {
+    display: flex;
+    justify-content: center;
+
+}

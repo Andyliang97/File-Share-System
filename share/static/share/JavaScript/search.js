@@ -1,0 +1,1 @@
+search = document.querySelector('.submit')

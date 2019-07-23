@@ -1,0 +1,25 @@
+.upload-file-info {
+    height: 60%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+
+.info-item {
+    border: 1px solid grey;
+    border-radius: 15px;
+    text-align: center;
+    margin: 1%;
+    padding:3%;
+    font-size: 20px;
+}
+
+.download-link {
+    color: white;
+}
+
+.download-link:hover {
+    color: #fff09b;
+}

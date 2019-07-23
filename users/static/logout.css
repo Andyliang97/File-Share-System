@@ -1,0 +1,9 @@
+.logout-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin:10%;
+    background: url("./background.jpg") no-repeat;
+    background-size: cover;
+}

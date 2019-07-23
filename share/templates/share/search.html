@@ -1,0 +1,12 @@
+{% block search %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'share/CSS/search.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="search-box">
+    <form class="search-form" action="{% url 'share:search'%}">
+        <input type="text" placeholder="Search.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+
+</div>
+{% endblock %}

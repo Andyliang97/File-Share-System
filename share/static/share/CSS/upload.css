@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    background: url("../Images/background.jpg") no-repeat;
+    background-size: cover;
+}
+
+.nav-container-auth, .nav-container-not-auth {
+    display: flex;
+    padding: 0 15% 2% 0;
+    height:20%;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+}
+
+.nav-container-not-auth {
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: grey;
+    border: 1px solid grey;
+    margin: 0 0.5%;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 10%;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family:  "Courier New", Courier, monospace;
+    font-size: 16px;
+}
+
+.nav-link:hover, .upload-button:hover {
+    background: #0b7dda;
+}
+
+.upload-form {
+    width: 10%;
+    height: 45px;
+    margin: 0 0.5%;
+}
+
+.upload-button{
+    padding: 0;
+    color: grey;
+    background-color: transparent;
+    border: 1px solid grey;
+    border-radius: 15px;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    font-family:  "Courier New", Courier, monospace;
+    font-size: 16px;
+}
+
+.welcome-msg {
+    margin-right: auto;
+    margin-left: 10%;
+    color: white;
+    font-size:40px;
+    margin-bottom: 0;
+}
+
+

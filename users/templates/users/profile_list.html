@@ -1,0 +1,36 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'profile_list.css' %}">
+<div class="profile-file-list">
+    <div class="profile-file-title">
+        <div class="profile-file-id">ID</div>
+        <div class="profile-file-name" >File Name</div>
+        <div class="profile-file-size" >File Size</div>
+        <div class="profile-file-download-count" >Visits</div>
+        <div class="profile-file-date" >File Date</div>
+        <div class="profile-file-link" >File Link</div>
+        <div class="profile-button"></div>
+    </div>
+    {% for info in videoinfo %}
+    <div class="profile-file-content">
+        <div class="profile-file-id">{{info.pk}}</div>
+        <div class="profile-file-name" >{{info.file_name}}</div>
+        <div class="profile-file-size" >{{info.file_size}} KB</div>
+        <div class="profile-file-download-count" >{{info.download_count}}</div>
+        <div class="profile-file-date" >{{info.upload_time}}</div>
+        <div class="profile-file-link" >{{info.download_path}}</div>
+        <div class="profile-button">
+            <a class="profile-download-link" href="{% url 'share:download' info.id %}" style="color:#FFF;">
+                <button class="download-button">Download</button>
+            </a>
+            {% if info.user == user %}
+            <button class="profile-file-delete">Delete</button>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor%}
+</div>
+{% load static %}
+<script src="{% static 'JS/profile_list.js' %}"></script>
+
+

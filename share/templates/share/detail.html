@@ -1,0 +1,19 @@
+{% extends './base.html' %}
+{% block content%}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'share/CSS/detail.css' %}">
+<div class="upload-file-info">
+    <div class="info-container">
+        <div class="info-item">File Name: {{videoinfo.file_name}}</div>
+        <div class="info-item">Upload Time: {{videoinfo.upload_time}}</div>
+        <div class="info-item">File Size: {{videoinfo.file_size}} KB</div>
+        <div class="info-item">User IP: {{videoinfo.upload_ip}}</div>
+        <div class="info-item">#Download: {{videoinfo.download_count}}</div>
+        <div class="info-item">Download Path:
+            <a class="download-link" href="{% url 'share:download' videoinfo.id %}">
+                {{videoinfo.file_name}}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
