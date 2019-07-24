@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^57zrle(4ia^8dz5k+6(u7npvz6d2#ir=iz6cnm9jr-%)d%y0v'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG_VALUE') == "True"
 
 ALLOWED_HOSTS = []
 
@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'FileshareSystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ekkoufmj',
-        'USER': 'ekkoufmj',
-        'PASSWORD': 'SOKAIgoYQ6P7yuTRNevEw2kXHYSWftXQ',
-        'HOST': 'raja.db.elephantsql.com',
-        'PORT': '5432',
+        'NAME': os.environ.get("POSTGRESQL_NAME"),
+        'USER': os.environ.get("POSTGRESQL_NAME"),
+        'PASSWORD': os.environ.get("POSTGRESQL_PASSWORD"),
+        'HOST': os.environ.get("POSTGRESQL_HOST"),
+        'PORT': os.environ.get("POSTGRESQL_PORT"),
     }
 }
 
