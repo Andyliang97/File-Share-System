@@ -19,6 +19,9 @@ from django.contrib import messages
 
 # Create your views here.
 
+def image(request):
+    return render(request, 'share/image.html', {'imageurl': default_storage.url('liangandy/django-dark.width-808.png')})
+
 
 class IndexView(ListView):
     model = VideoInfo

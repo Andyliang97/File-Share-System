@@ -9,18 +9,40 @@
             </div>
         {% endfor %}
     {% endif %}
-<div class="upload-file-info">
-    <div class="info-container">
-        <div class="info-item">File Name: {{videoinfo.file_name}}</div>
-        <div class="info-item">Upload Time: {{videoinfo.upload_time}}</div>
-        <div class="info-item">File Size: {{videoinfo.file_size}} KB</div>
-        <div class="info-item">User IP: {{videoinfo.upload_ip}}</div>
-        <div class="info-item">#Download: {{videoinfo.download_count}}</div>
-        <div class="info-item">Download Path:
-            <a class="download-link" href="{% url 'share:download' videoinfo.id %}">
+
+
+<table class="table text-white d-flex justify-content-center align-items-center mt-5">
+    <tbody>
+        <tr>
+          <th>File Name</th>
+            <td>{{videoinfo.file_name}}</td>
+        </tr>
+        <tr>
+          <th>Upload Time</th>
+            <td>{{videoinfo.upload_time}}</td>
+        </tr>
+        <tr>
+          <th>File Size</th>
+            <td>{{videoinfo.file_size}} KB</td>
+        </tr>
+        <tr>
+        <tr>
+          <th>User IP</th>
+            <td>{{videoinfo.upload_ip}}</td>
+        </tr>
+          <th>#Download</th>
+            <td>{{videoinfo.download_count}}</td>
+        </tr>
+        <tr>
+          <th>Download Path</th>
+            <td><a class="download-link" href="{% url 'share:download' videoinfo.id %}">
                 {{videoinfo.file_name}}
-            </a>
-        </div>
-    </div>
-</div>
+            </a></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 {% endblock %}

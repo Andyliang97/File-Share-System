@@ -9,6 +9,7 @@ urlpatterns = [
     path('detail/<int:pk>/', views.DetailView.as_view(), name="detail"),
     path('download/<int:videoId>/', views.download, name="download"),
     path('search/', views.ListView.as_view(), name="search"),
-    path('delete/<int:videoId>', views.delete, name="delete")
+    path('delete/<int:videoId>', views.delete, name="delete"),
+    path('image/', views.image, name="image"),
 ]
 
