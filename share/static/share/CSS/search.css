@@ -1,6 +1,6 @@
 
 .search-box{
-    height:20%;
+    height:15%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,8 +16,8 @@
 }
 /* Style the search field */
 form.search-form input[type=text] {
-    padding: 10px;
-    font-size: 17px;
+    padding: 8px;
+    font-size: 13px;
     border: 1px solid grey;
     float: left;
     width: 50%;
@@ -28,11 +28,11 @@ form.search-form input[type=text] {
 
 /* Style the submit button */
 form.search-form button {
-    width: 45px;
-    padding: 10px;
-    background: #c5c5c5;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
     color: white;
-    font-size: 17px;
+    font-size: 12px;
     border: 1px solid grey;
     border-radius: 15px;
     cursor: pointer;
@@ -50,3 +50,12 @@ form.search-form::after {
     display: table;
 }
 
+/* The alert message box */
+.alert {
+  padding: 20px;
+  margin: 0 20%;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+  border-radius: 15px;
+}

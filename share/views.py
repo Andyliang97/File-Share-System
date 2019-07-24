@@ -3,6 +3,7 @@ import random
 import string
 
 from django.core.exceptions import ValidationError
+from django.core.files.storage import default_storage, FileSystemStorage
 from django.db.models import F
 from django.http import HttpResponseRedirect, FileResponse, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -12,15 +13,22 @@ from django.views.generic import View, DetailView, ListView
 from .models import VideoInfo
 from django.contrib.postgres.search import TrigramSimilarity
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.contrib import messages
 
 
 # Create your views here.
 
 
-class IndexView(View):
-    def get(self, request):
-        return render(request, 'share/mainpage.html', {'videoinfo': VideoInfo.objects.order_by('-upload_time')[:5]})
+class IndexView(ListView):
+    model = VideoInfo
+    template_name = 'share/mainpage.html'
+    context_object_name = 'videoinfo'
+    ordering = ['-upload_time']
+    paginate_by = 8
 
+
+class UploadView(View):
     @method_decorator(login_required)
     def post(self, request):
         max_size = 30720 # 30MB = 30720KB
@@ -31,21 +39,44 @@ class IndexView(View):
                 if size > max_size:
                     raise ValidationError('File too large. Size should not exceed 30 MB.')
             except ValidationError:
+                messages.warning(request, f'Error: File too large. Size should not exceed 30 MB.')
                 return render(request, 'share/mainpage.html', {'error_message': 'Size should not exceed 30 MB'})
             filename = file.name
-            # print(len('share/static/share/file/' + filename))
-            upload = VideoInfo(
-                code=''.join(random.sample(string.digits, 8)),
-                file_name=filename,
-                download_path='share/static/share/file/' + filename,
-                file_size=size,
-                upload_ip=str(request.META['REMOTE_ADDR']),
-                user=request.user
-            )
-            upload.save()
-            with open('share/static/share/file/' + filename, 'wb') as f:
-                f.write(file.read())
-        return HttpResponseRedirect(reverse('share:detail', args=(int(upload.id),)))
+            filepath = request.user.username+'/'+filename
+            '''
+            store to /media/
+            
+            fs = FileSystemStorage()
+            store_name=fs.save(request.user.username+'/'+filename, file)
+            store_url=fs.url(store_name)
+            '''
+
+            if default_storage.exists(filepath):
+                print('file already exit')
+                messages.warning(request, f'Error: Failed to store due to duplicate file name. '
+                                            f'Here is the file you uploaded before.')
+            else:
+                s3file = default_storage.open(filepath, 'w')
+                s3file.write(file)
+                s3file.close()
+                upload = VideoInfo(
+                    code=''.join(random.sample(string.digits, 8)),
+                    file_name=filename,
+                    download_path=filepath,
+                    file_size=size,
+                    upload_ip=str(request.META['REMOTE_ADDR']),
+                    user=request.user
+                )
+                upload.save()
+
+            '''Low level approach
+            
+            with open('share/static/share/file/' + filename, 'wb') as destination:
+                for chunk in file.chunks():
+                    destination.write(chunk)
+            '''
+        return HttpResponseRedirect(reverse('share:detail',
+                                            args=(int(VideoInfo.objects.get(download_path=filepath).id),)))
 
 
 class DetailView(DetailView):
@@ -56,6 +87,7 @@ class DetailView(DetailView):
 class ListView(ListView):
     template_name = 'share/mainpage.html'
     context_object_name = 'videoinfo'
+    paginate_by = 6
     # print('here')
 
     def get_queryset(self):
@@ -71,29 +103,31 @@ class ListView(ListView):
 
 def download(request, videoId):
     video_info = get_object_or_404(VideoInfo, pk=videoId)
-    file_path = ''.join(['share/static/share/file/', video_info.file_name])
-    # print(file_path)
-    if os.path.exists(file_path):
-        # print('exist')
-        # with open(file_path, 'rb') as f:
-        f = open(file_path, 'rb')
-        response = FileResponse(f)
+    '''
+    download from localhost
+    file_path = ''.join([settings.MEDIA_ROOT, '/', video_info.file_name])
+    '''
+    print('media/'+video_info.download_path)
+    if default_storage.exists(video_info.download_path):
+        f = default_storage.open(video_info.download_path, 'r')
+        response = FileResponse(f.read())
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = ''.join(['attachment; filename=', video_info.file_name])
         video_info.download_count = F('download_count') + 1
         video_info.save()
+        f.close()
         return response
+    else:
+        print('not found ')
     raise Http404
 
 
 def delete(request, videoId):
-    if request.method == 'GET':
+    if request.method == 'POST':
         delete_item = get_object_or_404(VideoInfo, pk=videoId)  # either pk or id is fine
-        print(delete_item.user)
-        print(request.user)
-        print(delete_item)
         if delete_item.user == request.user:
             delete_item.delete()
+            default_storage.delete(delete_item.download_path)
             return JsonResponse({'status': 'success', 'delete_item': delete_item.file_name})
         else:
             return JsonResponse({'status': 'fail', 'reason': 'User Not Authorized'})

@@ -5,6 +5,7 @@
     align-items: center;
     flex-direction: column;
     color: white;
+    padding-top:3%;
 }
 
 .info-item {
@@ -23,3 +24,14 @@
 .download-link:hover {
     color: #fff09b;
 }
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  margin: 0 20%;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+  border-radius: 15px;
+}
+

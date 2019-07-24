@@ -2,10 +2,17 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'share/CSS/search.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert">
+            {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 <div class="search-box">
     <form class="search-form" action="{% url 'share:search'%}">
         <input type="text" placeholder="Search.." name="search">
-        <button type="submit"><i class="fa fa-search"></i></button>
+        <button class="rounded-75 ml-1"type="submit"><i class="fa fa-search"></i></button>
     </form>
 
 </div>

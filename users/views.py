@@ -27,6 +27,7 @@ class ProfileListView(ListView):
     model = VideoInfo
     template_name = 'users/profile.html'
     context_object_name = 'videoinfo'
+    paginate_by = 10
 
     def get_queryset(self):
         return VideoInfo.objects.filter(user=self.request.user)

@@ -2,6 +2,13 @@
 {% block content%}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'share/CSS/detail.css' %}">
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert">
+            {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 <div class="upload-file-info">
     <div class="info-container">
         <div class="info-item">File Name: {{videoinfo.file_name}}</div>
