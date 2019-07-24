@@ -56,9 +56,9 @@ class UploadView(View):
                 messages.warning(request, f'Error: Failed to store due to duplicate file name. '
                                             f'Here is the file you uploaded before.')
             else:
-                s3file = default_storage.open(filepath, 'w')
-                s3file.write(file)
-                s3file.close()
+                # s3file = default_storage.open(filepath, 'w')
+                default_storage.save(filepath, file)
+                #s3file.close()
                 upload = VideoInfo(
                     code=''.join(random.sample(string.digits, 8)),
                     file_name=filename,
@@ -110,7 +110,7 @@ def download(request, videoId):
     print('media/'+video_info.download_path)
     if default_storage.exists(video_info.download_path):
         f = default_storage.open(video_info.download_path, 'r')
-        response = FileResponse(f.read())
+        response = FileResponse(f)
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = ''.join(['attachment; filename=', video_info.file_name])
         video_info.download_count = F('download_count') + 1
