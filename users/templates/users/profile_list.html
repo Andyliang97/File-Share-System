@@ -56,18 +56,33 @@
     const delete_item_button = document.querySelectorAll('.profile-file-delete');
     delete_item_button.forEach(function(btn) {
     btn.addEventListener('click', function(e){
-        console.log('fire!')
-        e.stopPropagation()
-        delete_item = btn.parentNode.parentNode
-        delete_item_id = delete_item.querySelector('.profile-file-id')
+        console.log('fire!');
+        e.stopPropagation();
+        delete_item = btn.parentNode.parentNode;
+        delete_item_id = delete_item.querySelector('.profile-file-id');
         let data = new FormData();
-        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');;
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         fetch("/share/delete/"+delete_item_id.innerHTML, {method: 'POST', body: data})
         .then(response => response.json())
         .then(data => {
             console.log(data['status']);
             if (data['status'] == 'success'){
-                delete_item.remove();
+                //delete_item.remove();
+                return fetch('/share/checkpagination/');
+            }
+        })
+        .then(response => response.json())
+        .then(data=>{
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log(data);
+            console.log(data['num_pages']);
+            pageNum=urlParams.get('page');
+            if (pageNum > data['num_pages']){
+                urlParams.set('page', parseInt(data['num_pages']));
+                window.location.search = urlParams.toString();
+            }
+            else{
+                window.location.reload(false);
             }
         })
         .catch(error => console.error('Error:', error));

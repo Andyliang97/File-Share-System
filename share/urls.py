@@ -11,5 +11,6 @@ urlpatterns = [
     path('search/', views.ListView.as_view(), name="search"),
     path('delete/<int:videoId>', views.delete, name="delete"),
     path('image/', views.image, name="image"),
+    path('checkpagination/', views.check_pagination, name="checkpagination"),
 ]
 

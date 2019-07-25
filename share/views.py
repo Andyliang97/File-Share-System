@@ -15,6 +15,7 @@ from django.contrib.postgres.search import TrigramSimilarity
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -56,9 +57,11 @@ class UploadView(View):
             '''
             print('prepare upload')
             if default_storage.exists(aws_filename):
-                print('file already exit')
+                print('file already exist')
                 messages.warning(request, f'Error: Failed to store due to duplicate file name. '
                                             f'Here is the file you uploaded before.')
+                return render(request, 'share/mainpage.html', {'error_message': 'Failed to store due to duplicate file '
+                                                                'name. Here is the file you uploaded before.'})
             else:
                 # s3file = default_storage.open(filepath, 'w')
                 default_storage.save(aws_filename, file)
@@ -132,8 +135,16 @@ def delete(request, videoId):
         delete_item = get_object_or_404(VideoInfo, pk=videoId)  # either pk or id is fine
         if delete_item.user == request.user:
             delete_item.delete()
-            default_storage.delete(delete_item.download_path)
+            default_storage.delete(delete_item.aws_file_name)
             return JsonResponse({'status': 'success', 'delete_item': delete_item.file_name})
         else:
             return JsonResponse({'status': 'fail', 'reason': 'User Not Authorized'})
+
+
+@login_required
+def check_pagination(request):
+    if request.method == "GET":
+        cur_user_file = VideoInfo.objects.filter(user=request.user)
+        p = Paginator(cur_user_file, 10)
+        return JsonResponse({'num_pages': p.num_pages})
 
