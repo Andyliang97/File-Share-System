@@ -34,7 +34,7 @@ class IndexView(ListView):
 class UploadView(View):
     @method_decorator(login_required)
     def post(self, request):
-        max_size = 30720 # 30MB = 30720KB
+        max_size = 4096 # 4MB = 4096KB
         if request.FILES:
             file = request.FILES.get("file")
             size = int(int(file.size) / 1024)
