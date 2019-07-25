@@ -62,7 +62,7 @@
         delete_item_id = delete_item.querySelector('.profile-file-id')
         let data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');;
-        fetch("http://localhost:8000/share/delete/"+delete_item_id.innerHTML, {method: 'POST', body: data})
+        fetch("/share/delete/"+delete_item_id.innerHTML, {method: 'POST', body: data})
         .then(response => response.json())
         .then(data => {
             console.log(data['status']);

@@ -8,7 +8,7 @@ delete_item_button.forEach(function(btn) {
         let data = new FormData();
         data.append('csrfmiddlewaretoken', window.CSRF_TOKEN);
         print(window.CSRF_TOKEN)
-        fetch("http://localhost:8000/share/delete/"+delete_item_id.innerHTML, {method: 'POST', body: data})
+        fetch("/share/delete/"+delete_item_id.innerHTML, {method: 'POST', body: data})
         .then(response => response.json())
         .then(data => {
             console.log(data['status']);
