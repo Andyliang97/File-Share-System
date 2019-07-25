@@ -4,6 +4,7 @@
     align-items: center;
     flex-direction: column;
     color: white;
+    word-break: break-all;
 }
 
 .profile-file-title, .profile-file-content {

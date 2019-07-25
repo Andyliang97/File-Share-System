@@ -45,7 +45,7 @@ class UploadView(View):
                 messages.warning(request, f'Error: File too large. Size should not exceed 30 MB.')
                 return render(request, 'share/mainpage.html', {'error_message': 'Size should not exceed 30 MB'})
             filename = file.name
-            filepath = request.user.username+'/'+filename
+            aws_filename = request.user.username+'/'+filename
             '''
             store to /media/
             
@@ -54,21 +54,22 @@ class UploadView(View):
             store_url=fs.url(store_name)
             '''
 
-            if default_storage.exists(filepath):
+            if default_storage.exists(aws_filename):
                 print('file already exit')
                 messages.warning(request, f'Error: Failed to store due to duplicate file name. '
                                             f'Here is the file you uploaded before.')
             else:
                 # s3file = default_storage.open(filepath, 'w')
-                default_storage.save(filepath, file)
+                default_storage.save(aws_filename, file)
                 #s3file.close()
                 upload = VideoInfo(
                     code=''.join(random.sample(string.digits, 8)),
                     file_name=filename,
-                    download_path=filepath,
+                    download_path=default_storage.url(request.user.username+'/'+filename),
                     file_size=size,
                     upload_ip=str(request.META['REMOTE_ADDR']),
-                    user=request.user
+                    user=request.user,
+                    aws_file_name=aws_filename
                 )
                 upload.save()
 
@@ -79,7 +80,7 @@ class UploadView(View):
                     destination.write(chunk)
             '''
         return HttpResponseRedirect(reverse('share:detail',
-                                            args=(int(VideoInfo.objects.get(download_path=filepath).id),)))
+                                            args=(int(VideoInfo.objects.get(aws_file_name=aws_filename).id),)))
 
 
 class DetailView(DetailView):
@@ -111,8 +112,8 @@ def download(request, videoId):
     file_path = ''.join([settings.MEDIA_ROOT, '/', video_info.file_name])
     '''
     print('media/'+video_info.download_path)
-    if default_storage.exists(video_info.download_path):
-        f = default_storage.open(video_info.download_path, 'r')
+    if default_storage.exists(video_info.aws_file_name):
+        f = default_storage.open(video_info.aws_file_name, 'r')
         response = FileResponse(f)
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = ''.join(['attachment; filename=', video_info.file_name])
