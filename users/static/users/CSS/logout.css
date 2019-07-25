@@ -4,6 +4,6 @@
     align-items: center;
     flex-direction: column;
     margin:10%;
-    background: url("/static/users/Images/background.jpg") no-repeat;
+    background: url("/static/users/Images/background.jpg") repeat;
     background-size: cover;
 }
