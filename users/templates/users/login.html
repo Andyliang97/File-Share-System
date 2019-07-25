@@ -21,9 +21,13 @@
                 <button class="btn btn-outline-success" type="submit">Login</button>
             </div>
         </form>
-        <div class="border-top pt-3 signin-btn">
+        <div class="border-top pt-3 signin-btn d-flex align-items-center flex-column">
             <small class="text-muted">
                 Need An Account?<a class="ml-2" href="{% url 'users:register' %}">Sign Up Now</a>
+            </small>
+            <small class="text-muted">
+                <a class="ml-2" href="{% url 'share:index' %}">Continue As a Guest</a>
+                (You Need An Account To Be Able To Upload File)
             </small>
         </div>
 

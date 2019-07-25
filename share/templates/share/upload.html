@@ -19,13 +19,33 @@
     {% endif %}
 </nav>
 
-<nav class="nav-container-not-auth">
-
-
-</nav>
-
-
-
 {% load static %}
-<script src="{% static 'share/JavaScript/upload.js' %}"></script>
+<script type="text/javascript" src="{% static 'share/JavaScript/upload.js' %}"></script>
+<!--<script type="text/javascript">
+    const upload = (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        fetch('{% url 'share:upload'%}', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        })
+        .catch(error => console.log(error));
+    };
+
+    document.querySelector(".upload-button").addEventListener("click", function() {
+        console.log('clicked')
+        document.getElementById("upload-input").click();
+    });
+
+    const input = document.getElementById("upload-input")
+    input.onchange = function() {
+        upload(input.files[0])
+    };
+</script>-->
 {% endblock %}
