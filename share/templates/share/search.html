@@ -9,11 +9,13 @@
             </div>
         {% endfor %}
     {% endif %}
-<div class="search-box">
+<div class="search-box d-flex flex-column">
     <form class="search-form" action="{% url 'share:search'%}">
         <input type="text" placeholder="Search.." name="search">
         <button class="rounded-75 ml-1"type="submit"><i class="fa fa-search"></i></button>
     </form>
-
+    <p class="mt-3 text-muted">File size is limited to 4 MB for now due to restriction on Heroku.
+        I will fix that later by uploading files directly to AWS S3.
+    </p>
 </div>
 {% endblock %}
