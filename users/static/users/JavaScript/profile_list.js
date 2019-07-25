@@ -5,7 +5,10 @@ delete_item_button.forEach(function(btn) {
         e.stopPropagation()
         delete_item = btn.parentNode.parentNode
         delete_item_id = delete_item.querySelector('.profile-file-id')
-        fetch("http://localhost:8000/share/delete/"+delete_item_id.innerHTML, {method: 'POST'})
+        let data = new FormData();
+        data.append('csrfmiddlewaretoken', window.CSRF_TOKEN);
+        print(window.CSRF_TOKEN)
+        fetch("http://localhost:8000/share/delete/"+delete_item_id.innerHTML, {method: 'POST', body: data})
         .then(response => response.json())
         .then(data => {
             console.log(data['status']);
