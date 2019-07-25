@@ -1,25 +1,29 @@
 {% block content%}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'share/CSS/upload.css' %}">
-{% if user.is_authenticated %}
-<nav class='nav-container-auth'>
+<nav class='nav-container'>
+    {% if user.is_authenticated %}
     <h1 class="welcome-msg">Welcome, {{user.username}}</h1>
     <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'share:index' %}">Main Page</a>
     <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:logout' %}">Logout</a>
     <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:profile' %}">Profile</a>
+    {% else %}
+    <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'share:index' %}">Main Page</a>
+    <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:login' %}">Login</a>
+    <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:register' %}">Register</a>
+    {% endif %}
     <form class="upload-form" enctype="multipart/form-data" action="{% url 'share:upload'%}" method="post">
         {% csrf_token %}
         <input type="file" id="upload-input" name="file" hidden="hidden" />
         <button type="button" class="btn btn-outline-info mr-2 btn-sm upload-button">Upload</button>
     </form>
 </nav>
-{% else %}
+
 <nav class="nav-container-not-auth">
-    <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'share:index' %}">Main Page</a>
-    <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:login' %}">Login</a>
-    <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:register' %}">Register</a>
+
+
 </nav>
-{% endif %}
+
 
 
 {% load static %}
