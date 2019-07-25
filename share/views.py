@@ -41,7 +41,7 @@ class UploadView(View):
             try:
                 print(size)
                 if size > max_size:
-                    raise ValidationError('File too large. Size should not exceed 30 MB.')
+                    raise ValidationError('File too large. Size should not exceed 4 MB.')
             except ValidationError:
                 messages.warning(request, f'Error: File too large. Size should not exceed 30 MB.')
                 return render(request, 'share/mainpage.html', {'error_message': 'Size should not exceed 30 MB'})
