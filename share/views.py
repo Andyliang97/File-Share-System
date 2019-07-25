@@ -39,6 +39,7 @@ class UploadView(View):
             file = request.FILES.get("file")
             size = int(int(file.size) / 1024)
             try:
+                print(size)
                 if size > max_size:
                     raise ValidationError('File too large. Size should not exceed 30 MB.')
             except ValidationError:
@@ -53,7 +54,7 @@ class UploadView(View):
             store_name=fs.save(request.user.username+'/'+filename, file)
             store_url=fs.url(store_name)
             '''
-
+            print('prepare upload')
             if default_storage.exists(aws_filename):
                 print('file already exit')
                 messages.warning(request, f'Error: Failed to store due to duplicate file name. '
