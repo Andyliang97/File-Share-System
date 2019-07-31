@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <nav class='nav-container'>
+        {% if user.is_authenticated %}
+        <h1 class="welcome-msg">Welcome, {{user.username}}</h1>
+        <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'share:index' %}">Main Page</a>
+        <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:logout' %}">Logout</a>
+        <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:profile' %}">Profile</a>
+        <form class="upload-form" enctype="multipart/form-data" action="{% url 'share:upload'%}" method="post">
+            {% csrf_token %}
+            <input type="file" id="upload-input" name="file" hidden="hidden" />
+            <button type="button" class="btn btn-outline-info mr-2 btn-sm upload-button">Upload</button>
+        </form>
+        {% else %}
+        <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'share:index' %}">Main Page</a>
+        <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:login' %}">Login</a>
+        <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:register' %}">Register</a>
+        {% endif %}
+    </nav>
+</body>
+</html>
