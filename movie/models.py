@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
+class MovieComment(models.Model):
+    contributor = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField()
+
+
 class MovieReview(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     movie_name = models.CharField(max_length=256, verbose_name="Movie Name", default="")
@@ -12,6 +17,7 @@ class MovieReview(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     overview = models.TextField()
     cover = models.ImageField(upload_to="Movie", blank=True)
+    comment = models.ManyToManyField(MovieComment)
 
     class Meta:
         verbose_name = "Movie Information"
@@ -19,3 +25,7 @@ class MovieReview(models.Model):
 
     def __str__(self): # the name we are going to see while query
         return self.movie_name
+
+
+
+

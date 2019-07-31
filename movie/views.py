@@ -7,8 +7,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
+from django.views.generic.list import MultipleObjectMixin
+
 from .forms import MovieForm
-from .models import MovieReview
+from .models import MovieReview, MovieComment
 
 import requests
 import os
@@ -53,10 +55,31 @@ class HomeListView(ListView):
     paginate_by = 3
 
 
-class MovieDetailView(DetailView):
+class MovieDetailView(DetailView, MultipleObjectMixin):
     model = MovieReview
     template_name = 'movie/detail.html'
     context_object_name = "moviereview"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        # object_list = MovieComment.objects.filter(comment=self.get_object())
+        object_list = self.get_object().comment.all()
+        # for obj in object_list:
+        #    print(obj.contributor)
+        context = super(MovieDetailView, self).get_context_data(object_list=object_list, **kwargs)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        #print(request.POST.get("comment"))
+        cmt = MovieComment.objects.create(contributor=request.user, comment=request.POST.get("comment"))
+        #print(cmt)
+        cur_movie=self.get_object()
+        #print(cur_movie)
+        cur_movie.comment.add(cmt)
+        cur_movie.save()
+        return HttpResponseRedirect(reverse('movie:detail', args=(self.get_object().id, )))
+
+
 
 
 

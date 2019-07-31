@@ -142,7 +142,7 @@ STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'share:index'
+LOGIN_REDIRECT_URL = 'movie:home'
 LOGIN_URL = 'users:login'
 
 
