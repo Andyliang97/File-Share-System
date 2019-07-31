@@ -25,6 +25,13 @@
         <a class='btn btn-outline-info  mr-2 btn-sm' href="{% url 'users:register' %}">Register</a>
         <a class='btn btn-outline-info  mr-5 btn-sm' href="{% url 'share:index' %}">FileShare System</a>
         {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger">
+            {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
     </div>
 
     <div class="d-flex flex-direction-row justify-content-sm-center" >

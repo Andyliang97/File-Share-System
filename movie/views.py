@@ -1,5 +1,6 @@
 from io import BytesIO
 
+from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -46,6 +47,9 @@ class CreateView(View):
             #id = MovieReview.objects.get(movie_name=movie.movie_name).id
             id = movie.pk
             return HttpResponseRedirect(reverse('movie:detail', args=(id, )))
+        else:
+            # messages.warning(request, f'Error: Something Wrong With You Input')
+            return render(request, "movie/create.html", {'form': form})
 
 
 class HomeListView(ListView):
