@@ -71,12 +71,9 @@ class MovieDetailView(DetailView, MultipleObjectMixin):
 
     def post(self, request, *args, **kwargs):
         #print(request.POST.get("comment"))
-        cmt = MovieComment.objects.create(contributor=request.user, comment=request.POST.get("comment"))
-        #print(cmt)
-        cur_movie=self.get_object()
-        #print(cur_movie)
-        cur_movie.comment.add(cmt)
-        cur_movie.save()
+        cmt = MovieComment(contributor=request.user, comment=request.POST.get("comment"))
+        cmt.save()
+        self.get_object().comment.add(cmt)
         return HttpResponseRedirect(reverse('movie:detail', args=(self.get_object().id, )))
 
 
