@@ -31,12 +31,8 @@ class CreateView(View):
         if form.is_valid():
             movie = form.save(commit=False)
             movie.creator = request.user
-            if cover:
-                print("cover!")
-                movie.save()
-                return redirect('/create/')
-            else:
-                poster_path = request.POST.get("poster_path")
+            poster_path = request.POST.get("poster_path")
+            if poster_path:
                 pic_url = "https://image.tmdb.org/t/p/w300"+poster_path
                 pic_request = requests.get(pic_url, stream=True)
                 if pic_request.status_code == requests.codes.ok:
@@ -44,12 +40,13 @@ class CreateView(View):
                     fp = BytesIO()
                     fp.write(pic_request.content)
                     movie.cover.save(file_name, fp)
-            #id = MovieReview.objects.get(movie_name=movie.movie_name).id
+            else:
+                movie.save()
             id = movie.pk
             return HttpResponseRedirect(reverse('movie:detail', args=(id, )))
         else:
             # messages.warning(request, f'Error: Something Wrong With You Input')
-            return render(request, "movie/create.html", {'form': form})
+            return render(request, "movie/create.html", {'form': form, 'poster_path': request.POST.get("poster_path")})
 
 
 class HomeListView(ListView):

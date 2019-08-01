@@ -18,8 +18,9 @@ class MovieReview(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1,
                                  validators=[MaxValueValidator(10.0), MinValueValidator(0.0)])
     overview = models.TextField()
-    cover = models.ImageField(upload_to="Movie", blank=True)
+    cover = models.ImageField(upload_to="Movie", blank=True, default='Movie/default.jpg')
     comment = models.ManyToManyField(MovieComment)
+    #poster_path = models.CharField(max_length=256, verbose_name="Poster Path", default="")
 
     class Meta:
         verbose_name = "Movie Information"
