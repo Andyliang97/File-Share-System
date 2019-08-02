@@ -1,11 +1,13 @@
 from io import BytesIO
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 from django.views.generic.list import MultipleObjectMixin
@@ -70,6 +72,7 @@ class MovieDetailView(DetailView, MultipleObjectMixin):
         context = super(MovieDetailView, self).get_context_data(object_list=object_list, **kwargs)
         return context
 
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         #print(request.POST.get("comment"))
         cmt = MovieComment(contributor=request.user, comment=request.POST.get("comment"))
